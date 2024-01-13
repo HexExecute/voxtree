@@ -6,6 +6,7 @@ mod voxtree;
 
 #[cfg(not(feature = "no_std"))]
 pub use node::Node;
+pub use packed::PackedVoxtree;
 #[cfg(not(feature = "no_std"))]
 pub use voxtree::Voxtree;
 

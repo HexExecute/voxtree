@@ -1,3 +1,5 @@
+#![cfg_attr(feature = "no_std", no_std)]
+
 #[cfg(not(feature = "no_std"))]
 mod node;
 mod packed;

@@ -1,19 +1,19 @@
-#![cfg_attr(feature = "no_std", no_std)]
+#![cfg_attr(not(feature = "std"), no_std)]
 
-#[cfg(not(feature = "no_std"))]
+#[cfg(feature = "std")]
 mod node;
 mod packed;
-#[cfg(not(feature = "no_std"))]
+#[cfg(feature = "std")]
 mod voxtree;
 
-#[cfg(not(feature = "no_std"))]
+#[cfg(feature = "std")]
 pub use node::Node;
 pub use packed::PackedVoxtree;
-#[cfg(not(feature = "no_std"))]
+#[cfg(feature = "std")]
 pub use voxtree::Voxtree;
 
 #[cfg(test)]
-#[cfg(not(feature = "no_std"))]
+#[cfg(feature = "std")]
 mod voxtree_tests {
     use cgmath::Vector3;
 
@@ -193,7 +193,7 @@ mod voxtree_tests {
 }
 
 #[cfg(test)]
-#[cfg(not(feature = "no_std"))]
+#[cfg(feature = "std")]
 mod packed_voxtree_tests {
     use crate::{packed::PackedVoxtree, Node, Voxtree};
 

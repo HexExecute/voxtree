@@ -11,8 +11,12 @@ impl<'a, T> PackedVoxtree<'a, T> {
         let mut x = x.min(self.scale - 1);
         let mut y = y.min(self.scale - 1);
         let mut z = z.min(self.scale - 1);
-        let depth = depth.min(self.scale.leading_zeros()); // depth = max(depth, log2(scale))
-                                                           // TODO: limit depth so that it's not outside of scale if node is a branch
+        let depth = if depth > self.scale.leading_zeros() {
+            self.scale.leading_zeros()
+        } else {
+            depth
+        }; // depth = max(depth, log2(scale))
+           // TODO: limit depth so that it's not outside of scale if node is a branch
         let mut node = self.root;
 
         for i in 0..depth {

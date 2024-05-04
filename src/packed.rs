@@ -23,8 +23,8 @@ impl<'a, T> PackedVoxtree<'a, T> {
         } else {
             z
         };
-        let depth = if depth > self.scale.leading_zeros() {
-            self.scale.leading_zeros()
+        let depth = if depth > leading_zeros(self.scale) {
+            leading_zeros(self.scale)
         } else {
             depth
         }; // depth = max(depth, log2(scale))
@@ -50,5 +50,16 @@ impl<'a, T> PackedVoxtree<'a, T> {
         }
 
         node as usize
+    }
+}
+
+fn leading_zeros(mut n: u32) -> u32 {
+    let mut count = 0;
+    loop {
+        if n == 0 {
+            return count;
+        }
+        count += 1;
+        n >>= 1;
     }
 }

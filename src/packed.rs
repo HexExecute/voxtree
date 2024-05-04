@@ -8,9 +8,21 @@ pub struct PackedVoxtree<'a, T: Sized> {
 
 impl<'a, T> PackedVoxtree<'a, T> {
     pub fn fetch(&self, x: u32, y: u32, z: u32, depth: u32) -> usize {
-        let mut x = x.min(self.scale - 1);
-        let mut y = y.min(self.scale - 1);
-        let mut z = z.min(self.scale - 1);
+        let mut x = if x > self.scale - 1 {
+            self.scale - 1
+        } else {
+            x
+        };
+        let mut y = if y > self.scale - 1 {
+            self.scale - 1
+        } else {
+            y
+        };
+        let mut z = if z > self.scale - 1 {
+            self.scale - 1
+        } else {
+            z
+        };
         let depth = if depth > self.scale.leading_zeros() {
             self.scale.leading_zeros()
         } else {

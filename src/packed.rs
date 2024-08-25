@@ -1,4 +1,6 @@
 // TODO: shouldn't use anything that's from std
+#![no_std]
+
 pub struct PackedVoxtree<'a, T: Sized> {
     pub root: u32,
     pub scale: u32,

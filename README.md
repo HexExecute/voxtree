@@ -1,5 +1,5 @@
 # voxtree
-A simple sparse voxel octree implementation in rust.
+A simple sparse voxel 64-tree implementation in rust.
 
 ## project goals
 - Providing a simple to use surface API while maximizing performance.

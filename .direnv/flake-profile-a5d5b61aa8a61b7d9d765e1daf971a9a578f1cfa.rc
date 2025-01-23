@@ -53,7 +53,7 @@ NIX_CC_WRAPPER_TARGET_BUILD_x86_64_unknown_linux_gnu='1'
 export NIX_CC_WRAPPER_TARGET_BUILD_x86_64_unknown_linux_gnu
 NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_CFLAGS_COMPILE=' -frandom-seed=g0890x6zd5 -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include'
+NIX_CFLAGS_COMPILE=' -frandom-seed=m38bahzfvi -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include'
 export NIX_CFLAGS_COMPILE
 NIX_CFLAGS_COMPILE_FOR_BUILD=' -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include -isystem /nix/store/xznbpwh1sxaamd2srd1i80il422k6kfc-openssl-3.0.14-dev/include'
 export NIX_CFLAGS_COMPILE_FOR_BUILD
@@ -103,6 +103,8 @@ READELF_FOR_BUILD='readelf'
 export READELF_FOR_BUILD
 RUST_SRC_PATH='/nix/store/03hzfyp8zajnmzh5l5ia7j1as2irkr4h-rust-minimal-1.80.1/lib/rustlib/src/rust/library'
 export RUST_SRC_PATH
+SHELL='/nix/store/4bj2kxdm1462fzcc2i2s4dn33g2angcc-bash-5.2p32/bin/bash'
+export SHELL
 SIZE='size'
 export SIZE
 SIZE_FOR_BUILD='size'
@@ -2037,4 +2039,4 @@ export TMP="$NIX_BUILD_TOP"
 export TMPDIR="$NIX_BUILD_TOP"
 export TEMP="$NIX_BUILD_TOP"
 export TEMPDIR="$NIX_BUILD_TOP"
-eval "$shellHook"
+eval "${shellHook:-}"

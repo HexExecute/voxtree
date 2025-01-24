@@ -16,7 +16,7 @@ pub struct Voxtree<T> {
 #[derive(Clone, Copy, PartialEq, Eq, Pod, Zeroable)]
 pub struct Branch {
     pub bitmask: u64,
-    address: u32,
+    pub address: u32,
 }
 
 bitflags! {

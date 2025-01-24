@@ -1,13 +1,14 @@
 [package]
 name = "voxtree"
 description = "A simple sparse voxel 64-tree implementation in rust."
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 authors = [ "hex.execute" ]
 license = "MIT"
 
 [dependencies]
 bitflags = "2.6.0"
+bytemuck = { version = "1.21.0", features = [ "derive" ] }
 either = "1.13.0"
 
 [profile.release]

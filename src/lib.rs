@@ -1,6 +1,7 @@
 use std::{fmt::Debug, ops::Range};
 
 use bitflags::bitflags;
+use bytemuck::{Pod, Zeroable};
 use either::Either::{self, Left, Right};
 
 #[derive(Debug, Clone)]
@@ -10,8 +11,9 @@ pub struct Voxtree<T> {
     pub leaves: Vec<T>,
     pub features: Features,
 }
-#[repr(C)]
-#[derive(Clone, Copy, PartialEq, Eq)]
+
+#[repr(C, packed)]
+#[derive(Clone, Copy, PartialEq, Eq, Pod, Zeroable)]
 pub struct Branch {
     pub bitmask: u64,
     address: u32,

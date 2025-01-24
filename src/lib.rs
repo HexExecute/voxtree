@@ -5,7 +5,7 @@ use either::Either::{self, Left, Right};
 
 #[derive(Debug, Clone)]
 pub struct Voxtree<T> {
-    depth: u8,
+    pub depth: u8,
     pub branches: Vec<Branch>,
     pub leaves: Vec<T>,
     pub features: Features,

@@ -1,7 +1,7 @@
 [package]
 name = "voxtree"
 description = "A simple sparse voxel 64-tree implementation in rust."
-version = "1.0.3"
+version = "1.0.4"
 edition = "2021"
 authors = [ "hex.execute" ]
 license = "MIT"

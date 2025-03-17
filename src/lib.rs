@@ -86,9 +86,9 @@ impl<T: Clone + Copy + PartialEq> Voxtree<T> {
 
             let index = branch.get_index(x, y, z, depth);
 
-            x &= 3;
-            y &= 3;
-            z &= 3;
+            x &= (1 << ((depth as u32) << 1)) - 1;
+            y &= (1 << ((depth as u32) << 1)) - 1;
+            z &= (1 << ((depth as u32) << 1)) - 1;
 
             if (branch.bitmask >> index & 1) == 0 {
                 return None;
@@ -133,9 +133,9 @@ impl<T: Clone + Copy + PartialEq> Voxtree<T> {
 
             let index = traversal_node.get_index(x, y, z, depth);
 
-            x &= 3;
-            y &= 3;
-            z &= 3;
+            x &= (1 << ((depth as u32) << 1)) - 1;
+            y &= (1 << ((depth as u32) << 1)) - 1;
+            z &= (1 << ((depth as u32) << 1)) - 1;
 
             let transformed_index = traversal_node.get_transformed_index(index);
 
@@ -375,7 +375,13 @@ impl Branch {
     }
 
     pub fn get_transformed_index(&self, index: usize) -> usize {
-        (self.bitmask.count_ones() - (self.bitmask >> index).count_ones()) as usize
+        let ones = self.bitmask.count_ones() as usize;
+        if ones == 0 {
+            0
+        } else {
+            index.min(ones - 1)
+        }
+        // (self.bitmask.count_ones() - (self.bitmask >> index).count_ones()) as usize
     }
 }
 
@@ -427,46 +433,92 @@ mod tests {
 
     #[test]
     fn set() {
-        let mut tree: Voxtree<u8> = Voxtree::empty(2, Features::DirectedAcyclicGraph);
-        tree.branches[0] = Branch {
-            bitmask:
-                0b0000_0000_0000_0100__0000_0000_0000_0001__0000_0000_0000_0000__0000_0000_0000_0001,
-            address: 1,
-        };
-        tree.branches.push(Branch {
-            bitmask: u16::MAX as u64,
-            address: 1 << 31,
-        });
-        tree.branches.push(Branch {
-            bitmask: u64::MAX,
-            address: (0b11 << 30) + 16,
-        });
-        tree.branches.push(Branch {
-            bitmask: 0b0100_0110_1000_1110,
-            address: (0b11 << 30) + 17,
-        });
+        // let mut tree: Voxtree<u8> = Voxtree::empty(2, Features::DirectedAcyclicGraph);
+        // tree.branches[0] = Branch {
+        //     bitmask:
+        //         0b0000_0000_0000_0100__0000_0000_0000_0001__0000_0000_0000_0000__0000_0000_0000_0001,
+        //     address: 1,
+        // };
+        // tree.branches.push(Branch {
+        //     bitmask: u16::MAX as u64,
+        //     address: 1 << 31,
+        // });
+        // tree.branches.push(Branch {
+        //     bitmask: u64::MAX,
+        //     address: (0b11 << 30) + 16,
+        // });
+        // tree.branches.push(Branch {
+        //     bitmask: 0b0100_0110_1000_1110,
+        //     address: (0b11 << 30) + 17,
+        // });
 
-        tree.leaves = (0..16).collect();
-        tree.leaves.push(99);
-        tree.leaves.push(100);
+        // tree.leaves = (0..16).collect();
+        // tree.leaves.push(99);
+        // tree.leaves.push(100);
 
-        dbg!(&tree);
-        dbg!(tree.get(2, 0, 0, 2).unwrap());
+        // dbg!(&tree);
+        // dbg!(tree.get(2, 0, 0, 2).unwrap());
 
-        tree.set(
-            2,
-            0,
-            0,
-            2,
-            Some(Right(Branch {
-                bitmask: 0,
-                address: 999,
-            })),
-        )
-        .unwrap();
+        // tree.set(
+        //     2,
+        //     0,
+        //     0,
+        //     2,
+        //     Some(Right(Branch {
+        //         bitmask: 0,
+        //         address: 999,
+        //     })),
+        // )
+        // .unwrap();
 
-        dbg!(&tree);
-        dbg!(tree.get(0, 0, 0, 3));
+        // dbg!(&tree);
+        // dbg!(tree.get(0, 0, 0, 3));
+
+        let mut tree = Voxtree::<[f32; 3]>::empty(3, Features::all());
+        tree.branches[0].bitmask = 0b1111;
+        // tree.branches[0].bitmask = rand::random_range(0..0b1111) as u64;
+        tree.branches[0].address = 1;
+        let mut b = tree.branches[0].bitmask.count_ones();
+        for _ in 0..b {
+            let bitmask = rand::random_range(0..0b1111) as u64;
+            // let bitmask = 0b1111;
+            tree.branches.push(Branch {
+                bitmask,
+                address: b + 1,
+            });
+            b += bitmask.count_ones();
+        }
+
+        let mut c = 0;
+        for _ in 0..(b - tree.branches[0].bitmask.count_ones()) {
+            // let bitmask = rand::random_range(0..u64::MAX);
+            let bitmask = u64::MAX;
+            tree.branches.push(Branch {
+                bitmask,
+                address: (1 << 31) + c,
+            });
+            c += bitmask.count_ones();
+        }
+
+        for _ in 0..c {
+            tree.leaves
+                .push([rand::random(), rand::random(), rand::random()]);
+        }
+
+        for branch in &tree.branches {
+            print!("({},{})", branch.get_address(), branch.bitmask.count_ones());
+        }
+
+        dbg!(tree.get(15, 0, 0, 2));
+
+        // dbg!(&tree.branches[64]);
+        // let branch = &tree.branches
+        //     [(tree.branches[64].address + tree.branches[64].bitmask.count_ones() - 1) as usize];
+        // dbg!(branch.get_transformed_index(branch.get_index(15, 15, 15, 2)));
+        // dbg!(branch.bitmask.count_ones());
+        // dbg!(branch);
+        // dbg!(&tree.leaves[branch.get_address() + branch.bitmask.count_ones() as usize - 1]);
+        // dbg!(tree.get(63, 63, 63, 3));
     }
 
     #[test]

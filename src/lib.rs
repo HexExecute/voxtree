@@ -86,9 +86,9 @@ impl<T: Clone + Copy + PartialEq> Voxtree<T> {
 
             let index = branch.get_index(x, y, z, depth);
 
-            x &= 3;
-            y &= 3;
-            z &= 3;
+            x &= (1 << ((depth as u32) << 1)) - 1;
+            y &= (1 << ((depth as u32) << 1)) - 1;
+            z &= (1 << ((depth as u32) << 1)) - 1;
 
             if (branch.bitmask >> index & 1) == 0 {
                 return None;
@@ -133,9 +133,9 @@ impl<T: Clone + Copy + PartialEq> Voxtree<T> {
 
             let index = traversal_node.get_index(x, y, z, depth);
 
-            x &= 3;
-            y &= 3;
-            z &= 3;
+            x &= (1 << ((depth as u32) << 1)) - 1;
+            y &= (1 << ((depth as u32) << 1)) - 1;
+            z &= (1 << ((depth as u32) << 1)) - 1;
 
             let transformed_index = traversal_node.get_transformed_index(index);
 
